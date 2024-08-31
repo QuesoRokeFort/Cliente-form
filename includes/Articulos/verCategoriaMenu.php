@@ -1,24 +1,21 @@
-<?php
-$parametro="";
+<?php 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
-    require_once "dbh.inc.php";
-    if (isset($_POST["nomCliente"])) {$parametro = htmlspecialchars($_POST["nomCliente"]);}
+    $results = getallCat();
+}   
+function getallCat(){
+    require_once "../dbh.inc.php";
+
     
-    $query= "SELECT * FROM cliente";
-    if (!empty($parametro) && $parametro != ""){
-        $query .= " WHERE nombre = :nombre";
-        $stmt = $pdo->prepare($query);
-        $stmt->bindParam(":nombre",$parametro);
-        $stmt->execute();
-    }else{
-        $stmt = $pdo->prepare($query);
-        $stmt->execute(); 
-    }
+    $query= "SELECT * FROM categoria";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(); 
+    
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $pdo = null;
     $stmt = null;
-}   
+    return $results;
+}
 ?>
 
 <!DOCTYPE html>
@@ -61,11 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     </style>
 </head>
 <body>
-    <form action="selectClient.php" method="post">
-        <label for="Cliente"> Cliente:</label>
-            <input id="nomCliente" type="text" name="nomCliente" placeholder ="Nombre">
-        <button type="submit">Buscar</button><br>
-    </form>
         
     <?php
         if(empty($results)){
@@ -77,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             foreach ($columns as $column) {
                 echo '<th>' . htmlspecialchars($column) . '</th>'; // Table headers
             }
-            echo '<th>' . "Seleccionar";
             echo '</tr>'; // End table header row
     
             // Iterate through results and create rows
@@ -86,16 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 foreach ($result as $value) {
                     echo '<td>' . htmlspecialchars($value) . '</td>'; // Table cells
                 }
-                echo '<td>';
-                    echo '<form action="clientSelected.php" method="POST">';
-                    echo '<input type="hidden" name="id" value="' . htmlspecialchars($result['id']) . '">'; 
-                    echo '<input type="hidden" name="nombre" value="' . htmlspecialchars($result['nombre']) . '">';
-                    echo '<button type="submit">Seleccionar</button>';
-                    echo '</form>';
-                echo '</td>';
                 echo '</tr>'; // End row
             }
             echo '</table>'; // End table
+            echo '<form action="articulosMenu.php" method="POST">';
+            echo '<button type="submit">GO BACK</button>';
+            echo '</form>';
         }
     ?>
 </body>

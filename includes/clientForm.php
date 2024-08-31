@@ -27,7 +27,7 @@
             <p style="color: red;"><?php echo htmlspecialchars($errorMessage); ?></p>
          <?php endif; ?>
 
-
+    
     <form action="clientInsertTable.php" method="post">
         <label for="Nombre"> Nombre:</label>
             <input id="nombre" type="text" name="nombre" placeholder ="Nombre"><br>

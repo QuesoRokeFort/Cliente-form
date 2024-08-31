@@ -14,5 +14,8 @@
     <form action="includes/selectClient.php" method="post">
         <button typo="submit">Ver Cliente</button><br>
     </form>
+    <form action="includes/Articulos/articulosMenu.php" method="post">
+        <button typo="submit">Articulos</button><br>
+    </form>
 </body>
 </html>
